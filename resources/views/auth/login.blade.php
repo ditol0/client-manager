@@ -15,6 +15,8 @@
             --border: #dbe3ee;
             --primary: #0ea5e9;
             --primary-hover: #0284c7;
+            --success: #10b981;
+            --success-soft: #ecfdf5;
             --danger: #dc2626;
             --danger-soft: #fef2f2;
             --radius-lg: 16px;
@@ -136,16 +138,27 @@
 
         .alert {
             border-radius: 10px;
-            padding: 10px 12px;
+            padding: 11px 12px;
             margin-bottom: 12px;
             font-size: 0.9rem;
             border: 1px solid transparent;
+            border-left-width: 4px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+            animation: riseIn 0.25s ease-out;
         }
 
         .alert-error {
             color: #991b1b;
             background: var(--danger-soft);
             border-color: #fecaca;
+            border-left-color: var(--danger);
+        }
+
+        .alert-success {
+            color: #065f46;
+            background: var(--success-soft);
+            border-color: #a7f3d0;
+            border-left-color: var(--success);
         }
 
         .error-list {
@@ -186,6 +199,12 @@
         @csrf
         <h1>Login</h1>
         <p class="subtitle">Your data is safe with us</p>
+
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
 
         @if(session('error'))
             <div class="alert alert-error">

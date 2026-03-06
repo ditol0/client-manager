@@ -20,8 +20,11 @@
             --text-soft: #475569;
             --primary: #0ea5e9;
             --primary-hover: #0284c7;
+            --success: #10b981;
+            --success-soft: #ecfdf5;
             --border: #e2e8f0;
             --danger: #ef4444;
+            --danger-soft: #fef2f2;
         }
 
         body {
@@ -90,6 +93,35 @@
             color: var(--text-main);
             font-size: 20px;
             margin-bottom: 6px;
+        }
+
+        .alert {
+            border-radius: 10px;
+            padding: 11px 12px;
+            font-size: 0.9rem;
+            border: 1px solid transparent;
+            border-left-width: 4px;
+            box-shadow: 0 8px 18px rgba(15, 23, 42, 0.08);
+            animation: riseIn 0.25s ease-out;
+        }
+
+        .alert-success {
+            color: #065f46;
+            background: var(--success-soft);
+            border-color: #a7f3d0;
+            border-left-color: var(--success);
+        }
+
+        .alert-error {
+            color: #991b1b;
+            background: var(--danger-soft);
+            border-color: #fecaca;
+            border-left-color: var(--danger);
+        }
+
+        .error-list {
+            margin: 0;
+            padding-left: 18px;
         }
 
         .formadd input {
@@ -165,10 +197,39 @@
             text-decoration: none;
         }
 
+        @keyframes riseIn {
+            from {
+                opacity: 0;
+                transform: translateY(8px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
         @media (max-width: 960px) {
             .contact {
                 grid-template-columns: 1fr;
                 padding: 18px;
+            }
+
+            @media (max-width: 600px) {
+
+                .table-wrap{
+                    overflow-x: auto;
+                }
+                table{
+                    min-width: 100px;
+                }
+                th{
+                    padding: 11px 3px;
+                }
+                td{
+                    padding: 11px 3px;
+                }
+
+                
             }
         }
     </style>
@@ -176,19 +237,36 @@
 <body>
   <div class="contact">
 
-    <form action="{{ route('logout') }}" method="POST" class="logout-form">
+    <form action="{{ route('logout') }}" method="post" class="logout-form">
         @csrf
         <button class="logout-btn" type="submit">Logout</button>
     </form>
-    <form action="" class="formadd">
+    <form action="{{route('store.adduser')}}" class="formadd">
 
+        @if(session('success'))
+            <div class="alert alert-success">{{ session('success') }}</div>
+        @endif
 
+        @if(session('error'))
+            <div class="alert alert-error">{{ session('error') }}</div>
+        @endif
+
+        @if($errors->any())
+            <div class="alert alert-error">
+                <ul class="error-list">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
+       @csrf
         <h2>Add User</h2>
         <input type="text" name="name" id="" placeholder="Name">
-        <input type="email" name="email" id="" placeholder="Email">
-        <input type="text" name="phone" id="" placeholder="Phone">
-        <input type="text" name="platform" id="" placeholder="Password">
-        <input type="text" name="server" id="" placeholder="Server">
+        <input type="text" name="server" id="" placeholder="server">
+        <input type="text" name="platform" id="" placeholder="platform">
+        <input type="email" name="email" id="" placeholder="email">
         <button type="submit">Add</button>
     </form>
     <div class="table-wrap">
@@ -196,18 +274,34 @@
             <tr>
                 <th>Name</th>
                 <th>Email</th>
-                <th>Phone</th>
-                <th>platform</th>
-                <th>server</th>
+                <th>Server</th>
+                <th>Platform</th>
+                <th>Action</th>
 
             </tr>
-            <tr>
-                <td>dito</td>
-                <td>gHs4o@example.com</td>
-                <td>+966 5 555 5555</td>
-                <td>التركيه</td>
-                <td><a href="#">Delete</a></td>
-            </tr>
+
+          
+
+            @if(empty($data))
+                <tr>
+                    <td colspan="5">No data found</td>
+                </tr>
+
+            @endif
+            @if(!empty($data))
+            @foreach ($data as $item)
+                <tr>
+                    <td>{{ $item->name }}</td>
+                    <td>{{ $item->email }}</td>
+                    <td>{{ $item->platform }}</td>
+                    <td>{{ $item->server }}</td>
+                    <td><a href="{{ route('delete.user', $item->id) }}">Delete</a></td>
+                </tr>
+                
+            @endforeach
+            @endif
+            
+            
         </table>
     </div>
     

@@ -5,6 +5,7 @@ use App\Http\Controllers\Auth\AuthController;
 use App\Http\Controllers\Admin\Auth\RegisterController;
 use Illuminate\Container\Attributes\Auth;
 use App\Http\Controllers\Admin\auth\LoginController;
+use App\Http\Controllers\Admin\HomeController;
 
 
 
@@ -21,7 +22,13 @@ Route::put('/admin/register/{user}', [RegisterController::class, 'update'])->nam
 
 Route::middleware('is_admin')->group(function () {
 
-    Route::get('/', function () {return view('User.home');})->name('home');
+  
+
+    Route::get('/', [HomeController::class, 'index'])->name('admin.home');
+
+    Route::get('/AddUser', [HomeController::class, 'store'])->name('store.adduser');
+
+    Route::get('/DeleteUser/{id}', [HomeController::class, 'delete'])->name('delete.user');
 
 });
 
