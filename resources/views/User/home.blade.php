@@ -46,6 +46,36 @@
             gap: 24px;
         }
 
+        .logout-form {
+            grid-column: 1 / -1;
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: -8px;
+        }
+
+        .logout-btn {
+            border: 1px solid rgba(239, 68, 68, 0.25);
+            border-radius: 10px;
+            padding: 10px 14px;
+            background: linear-gradient(90deg, #ef4444, #dc2626);
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            cursor: pointer;
+            transition: transform 0.15s ease, filter 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 10px 20px rgba(220, 38, 38, 0.2);
+        }
+
+        .logout-btn:hover {
+            transform: translateY(-1px);
+            filter: brightness(1.03);
+        }
+
+        .logout-btn:focus {
+            outline: none;
+            box-shadow: 0 0 0 4px rgba(239, 68, 68, 0.2);
+        }
+
         .formadd {
             background-color: #f8fafc;
             border: 1px solid var(--border);
@@ -145,7 +175,14 @@
 </head>
 <body>
   <div class="contact">
+
+    <form action="{{ route('logout') }}" method="POST" class="logout-form">
+        @csrf
+        <button class="logout-btn" type="submit">Logout</button>
+    </form>
     <form action="" class="formadd">
+
+
         <h2>Add User</h2>
         <input type="text" name="name" id="" placeholder="Name">
         <input type="email" name="email" id="" placeholder="Email">

@@ -25,8 +25,10 @@ class RegisterController extends Controller
             'password_confirmation' => 'required|same:password',
             
   ]);
-
-
+    
+    if($request['email'] == User::where('email', $request['enail'])->first()->email){
+        return back()->with('error', 'Email already exists');
+    }
     
     if($request['is_admin'] == 1){
              $user = User::create([
